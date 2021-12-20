@@ -1,0 +1,7 @@
+{
+	"path": "/v1",
+	"cookie": {
+		"secure": true,
+		"httpOnly": true
+	}
+}
