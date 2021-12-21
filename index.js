@@ -31,7 +31,7 @@ app.use(
 	session({
 		secret: process.env.SESSION_SECRET,
 		store: MongoStore.create({
-			mongoUrl: process.env.MONGODB_URI
+			mongoUrl: process.env.MONGODB_URI,
 		}),
 		resave: false,
 		saveUninitialized: true,

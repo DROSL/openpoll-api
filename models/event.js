@@ -6,6 +6,19 @@ const EventSchema = Schema({
 		type: String,
 		default: "Untitled event",
 	},
+	organisators: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "User",
+			required: true,
+		},
+	],
+	participants: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "User",
+		},
+	],
 	code: {
 		type: String,
 		unique: true,
