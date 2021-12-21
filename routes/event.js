@@ -26,27 +26,8 @@ router.post("/event", async (req, res) => {
 		});
 		await event.save();
 
-		return res.status(200).json(event);
-	} catch (err) {
-		return res.status(500).send("Something went wrong...");
-	}
-});
-
-router.post("/join", (req, res) => {});
-
-router.get("/event/:codeOrSecret", async (req, res) => {
-	const { codeOrSecret } = req.params;
-
-	if (codeOrSecret.length == SECRET_LENGTH) {
-		const event = await Event.findOne({
-			secret: codeOrSecret,
-		});
-		if (!event) {
-			return res.status(404).send("Event not found");
-		}
-
-		res.cookie("secret", codeOrSecret);
-		res.clearCookie("code");
+		req.session.destroy();
+		req.session.secret = event.secret;
 
 		return res.status(200).json({
 			title: event.title,
@@ -54,30 +35,37 @@ router.get("/event/:codeOrSecret", async (req, res) => {
 			secret: event.secret,
 			createdAt: event.createdAt,
 		});
-	} else if (codeOrSecret.length == CODE_LENGTH) {
-		const event = await Event.findOne({
-			code: codeOrSecret,
-		});
-
-		if (!event) {
-			return res.status(404).send("Event not found");
-		}
-
-		if (!event.open) {
-			return res
-				.status(403)
-				.send("Event is currently closed for new participants");
-		}
-
-		res.clearCookie("secret");
-		res.cookie("code", event.code);
-
-		return res.status(200).json({
-			title: event.title,
-			code: event.code,
-			created: event.createdAt,
-		});
+	} catch (err) {
+		return res.status(500).send("Something went wrong...");
 	}
+});
+
+// join an existing event
+router.post("/join", (req, res) => {
+
+});
+
+router.get("/event/:code", async (req, res) => {
+	const { codeOrSecret } = req.params;
+	const event = await Event.findOne({
+		code: codeOrSecret,
+	});
+
+	if (!event) {
+		return res.status(404).send("Event not found");
+	}
+
+	if (!event.open) {
+		return res
+			.status(403)
+			.send("Event is currently closed for new participants");
+	}
+
+	return res.status(200).json({
+		title: event.title,
+		code: event.code,
+		created: event.createdAt,
+	});
 });
 
 router.delete("/event/:code", async (req, res) => {

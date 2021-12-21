@@ -14,9 +14,6 @@ app.enable("trust proxy");
 const compression = require("compression");
 app.use(compression());
 
-const cookieParser = require("cookie-parser");
-app.use(cookieParser());
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -27,6 +24,20 @@ const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGODB_URI);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
+
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+app.use(
+	session({
+		secret: process.env.SESSION_SECRET,
+		store: MongoStore.create({
+			mongoUrl: process.env.MONGODB_URI
+		}),
+		resave: false,
+		saveUninitialized: true,
+		cookie: config.cookie,
+	})
+);
 
 const port = process.env.PORT || process.env.API_PORT;
 
