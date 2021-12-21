@@ -1,5 +1,7 @@
 # wevote-api
 
+Please see the [documentation](/docs/README.md).
+
 Prerequisites:
 
 ```sh
@@ -11,4 +13,10 @@ Usage:
 
 ```sh
 npm run dev
+```
+
+Before you commit, run:
+
+```sh
+npx prettier --write .
 ```
