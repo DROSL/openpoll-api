@@ -14,6 +14,9 @@ app.enable("trust proxy");
 const compression = require("compression");
 app.use(compression());
 
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -26,8 +29,10 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 const port = process.env.PORT || process.env.API_PORT;
-app.listen(port, () => {
-	console.log(`HTTP server running on port ${port}`);
+
+const http = require("http").createServer(app);
+http.listen(port, () => {
+	console.log(`Server running on port ${port}`);
 });
 
 const router = require("./router");
