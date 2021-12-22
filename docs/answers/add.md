@@ -21,6 +21,12 @@ Status: 200 OK
 }
 ```
 
+**Poll not found**
+
+```
+Status: 404 Not Found
+```
+
 **Missing fields**
 
 ```
