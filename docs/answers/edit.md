@@ -18,7 +18,9 @@ Status: 200 OK
 
 ```json
 {
-    "_id": "61c2ffd9b98abd8124e93bdf"
+    "_id": "61c308b0f53359e59e492b78",
+    "title": "0 legs",
+    "hidden": false
 }
 ```
 
