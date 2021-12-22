@@ -8,7 +8,7 @@
 | :----- | :----- | :--- | :----------------------------------- |
 | `poll_id` | string | path | **Required**. The poll id. |
 | `title` | string | body | **Required**. The title of the answer. |
-| `hidden` | boolean | body | Indicates if the answer is visible to participants. |
+| `hidden` | boolean | body | Indicates if the answer is visible to participants. Default `false`. |
 
 **Success response**
 
