@@ -8,6 +8,7 @@
 | :----- | :----- | :--- | :----------------------------------- |
 | `poll_id` | string | path | **Required**. The poll id. |
 | `title` | string | body | **Required**. The title of the answer. |
+| `hidden` | boolean | body | Indicates if the answer is visible to participants. |
 
 **Success response**
 
@@ -17,7 +18,9 @@ Status: 200 OK
 
 ```json
 {
-    "_id": "61c2ffd9b98abd8124e93bdf"
+    "_id": "61c308b0f53359e59e492b78",
+    "title": "0 legs",
+    "hidden": false
 }
 ```
 
