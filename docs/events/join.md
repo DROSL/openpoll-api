@@ -10,8 +10,8 @@ It is necessary to join the event explicitly, as the organizer may block the acc
 
 **Parameters**
 
-| Name | Type | In | Description |
-| :-- | :-- | :-- | :-- |
+| Name   | Type   | In   | Description                      |
+| :----- | :----- | :--- | :------------------------------- |
 | `code` | string | body | **Required**. Code of the event. |
 
 **Success response**
@@ -44,8 +44,8 @@ Organizers can share admin access to their events with other users.
 
 **Parameters**
 
-| Name | Type | In | Description |
-| :-- | :-- | :-- | :-- |
+| Name     | Type   | In   | Description                        |
+| :------- | :----- | :--- | :--------------------------------- |
 | `secret` | string | body | **Required**. Secret of the event. |
 
 **Success response**
@@ -56,10 +56,10 @@ Status: 200 OK
 
 ```json
 {
-  "title": "Untitled event",
-  "code": "",
-  "secret": "",
-  "createdAt": "2021-12-21T18:34:31.618Z"
+	"title": "Untitled event",
+	"code": "",
+	"secret": "",
+	"createdAt": "2021-12-21T18:34:31.618Z"
 }
 ```
 

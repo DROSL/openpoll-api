@@ -6,8 +6,8 @@
 
 **Parameters**
 
-| Name | Type | In | Description |
-| :-- | :-- | :-- | :-- |
+| Name   | Type   | In   | Description                          |
+| :----- | :----- | :--- | :----------------------------------- |
 | `code` | string | path | **Required**. The code of the event. |
 
 **Success response**

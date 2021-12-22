@@ -12,9 +12,9 @@ Status: 200 OK
 
 ```json
 {
-  "title": "Untitled event",
-  "code": "",
-  "secret": "",
-  "createdAt": "2021-12-21T18:34:31.618Z"
+	"title": "Untitled event",
+	"code": "",
+	"secret": "",
+	"createdAt": "2021-12-21T18:34:31.618Z"
 }
 ```

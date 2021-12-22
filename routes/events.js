@@ -42,22 +42,22 @@ router.post("/events", auth, async (req, res) => {
 
 // join an existing event as a participant
 router.post("/events/:code/join", auth, async (req, res) => {
-	const { code } = req.params;
-	const event = await Event.findOne({
-		code: code,
-	});
-
-	if (!event) {
-		return res.status(404).send("Event not found");
-	}
-
-	if (!event.open) {
-		return res
-			.status(403)
-			.send("Event is currently closed for new participants");
-	}
-
 	try {
+		const { code } = req.params;
+		const event = await Event.findOne({
+			code: code,
+		});
+
+		if (!event) {
+			return res.status(404).send("Event not found");
+		}
+
+		if (!event.open) {
+			return res
+				.status(403)
+				.send("Event is currently closed for new participants");
+		}
+
 		const { userId } = req.session;
 		if (!event.participants.contains(userId)) {
 			event.participants.push(userId);
@@ -72,16 +72,16 @@ router.post("/events/:code/join", auth, async (req, res) => {
 
 // join an existing meeting as a organisator
 router.post("/events/:secret/edit", auth, async (req, res) => {
-	const { secret } = req.params;
-	const event = await Event.findOne({
-		secret: secret,
-	});
-
-	if (!event) {
-		return res.status(404).send("Event not found");
-	}
-
 	try {
+		const { secret } = req.params;
+		const event = await Event.findOne({
+			secret: secret,
+		});
+
+		if (!event) {
+			return res.status(404).send("Event not found");
+		}
+
 		const { userId } = req.session;
 		if (!event.organisators.contains(userId)) {
 			event.organisators.push(userId);
@@ -100,50 +100,60 @@ router.post("/events/:secret/edit", auth, async (req, res) => {
 
 // get event information
 router.get("/events/:code", auth, async (req, res) => {
-	const { code } = req.params;
-	const event = await Event.findOne({
-		code: codeOrSecret,
-	});
+	try {
+		const { code } = req.params;
+		const event = await Event.findOne({
+			code: codeOrSecret,
+		});
 
-	if (!event) {
-		return res.status(404).send("Event not found");
+		if (!event) {
+			return res.status(404).send("Event not found");
+		}
+
+		const { userId } = req.session;
+		const isOrganisator = event.organisators.contains(userId);
+		const isParticipant = event.participants.contains(userId);
+		if (!isOrganisator && !isParticipant) {
+			return res
+				.status(403)
+				.send("You have to join this event first to participate");
+		}
+
+		return res.status(200).json({
+			title: event.title,
+			code: event.code,
+			created: event.createdAt,
+			...(isOrganisator && { secret: event.secret }),
+		});
+	} catch (err) {
+		return res.status(500).send("Something went wrong...");
 	}
-
-	const { userId } = req.session;
-	const isOrganisator = event.organisators.contains(userId);
-	const isParticipant = event.participants.contains(userId);
-	if (!isOrganisator && !isParticipant) {
-		return res
-			.status(403)
-			.send("You have to join this event first to participate");
-	}
-
-	return res.status(200).json({
-		title: event.title,
-		code: event.code,
-		created: event.createdAt,
-		...(isOrganisator && { secret: event.secret }),
-	});
 });
 
+router.put("/events/:code", auth, async (req, res) => {});
+
 router.delete("/events/:code", auth, async (req, res) => {
-	const { code } = req.params;
+	try {
+		const { code } = req.params;
+		const event = await Event.findOne({
+			code: code,
+		});
 
-	const event = await Event.findOne({
-		code: code,
-	});
-	if (!event) {
-		return res.status(404).send("Event not found");
+		if (!event) {
+			return res.status(404).send("Event not found");
+		}
+
+		const { userId } = req.session;
+		if (!event.organisators.contains(userId)) {
+			return res.status(403).send("Permission denied");
+		}
+
+		await event.delete();
+
+		return res.status(200).send("OK");
+	} catch (err) {
+		return res.status(500).send("Something went wrong...");
 	}
-
-	const { userId } = req.session;
-	if (!event.organisators.contains(userId)) {
-		return res.status(403).send("Permission denied");
-	}
-
-	await event.delete();
-
-	return res.status(200).send("OK");
 });
 
 module.exports = router;

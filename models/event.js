@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const Poll = require("./poll");
+
 const EventSchema = Schema({
 	title: {
 		type: String,
@@ -32,6 +34,11 @@ const EventSchema = Schema({
 		type: Date,
 		default: Date.now,
 	},
+});
+
+EventSchema.pre("remove", async function (next) {
+	await Poll.deleteMany({ event: this._id });
+	next();
 });
 
 module.exports = mongoose.model("Event", EventSchema);
