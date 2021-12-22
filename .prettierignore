@@ -5,5 +5,5 @@ coverage
 # Ignore all HTML files:
 *.html
 
-# Ignore README.md
-README.md
+# Ignore Markdown files
+*.md

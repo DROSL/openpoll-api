@@ -1,32 +1,21 @@
 const express = require("express");
 const router = express.Router();
 
-const auth = require("../middleware/auth");
+const setCookie = require("../middleware/setCookie");
+const checkPermission = require("../middleware/checkPermission");
 
-const Event = require("../models/event");
 const Poll = require("../models/poll");
-const Answer = require("../models/answer");
 
 // create new poll
-router.post("/events/:code/polls", auth, async (req, res) => {
+router.post("/events/:code/polls", setCookie, checkPermission, async (req, res) => {
 	try {
-		const { code } = req.params;
-		const event = await Event.findOne({
-			code: code,
-		});
+		const { event, isOrganisator } = res.locals;
 
-		if (!event) {
-			return res.status(404).send("Event not found");
+		if (!isOrganisator) {
+			return res.status(403).send("You are not an organisator of this event");
 		}
 
-		const { userId } = req.session;
-		if (!event.organisators.contains(userId)) {
-			return res
-				.status(403)
-				.send("You are not an organisator of the event");
-		}
-
-		const { title } = req.body;
+		const { title, type, votesPerParticipant, allowCustomAnswers, duration } = req.body;
 		if (!title) {
 			return res.status(400).send("Title required");
 		}
@@ -36,7 +25,8 @@ router.post("/events/:code/polls", auth, async (req, res) => {
 			event: event._id,
 			votesPerParticipant: 1,
 			allowCustomAnswers: false,
-			activeUntil: Date.now() + 3 * 60,
+			duration: 180,
+			activeUntil: null,
 		});
 		await poll.save();
 
@@ -46,39 +36,94 @@ router.post("/events/:code/polls", auth, async (req, res) => {
 			_id: poll._id,
 		});
 	} catch (err) {
+		console.log(err);
 		return res.status(500).send("Something went wrong...");
 	}
 });
 
 // get polls of event
-router.get("/events/:code/polls", auth, async (req, res) => {});
-
-// edit a poll
-router.put("/polls/:pollId", auth, async (req, res) => {});
-
-// delete a poll
-router.delete("/polls/:pollId", auth, async (req, res) => {
+router.get("/events/:code/polls", setCookie, checkPermission, async (req, res) => {
 	try {
-		const { pollId } = req.params;
-		const poll = await Poll.findOne({
-			_id: pollId,
-		}).populate("event");
+		const { event, isParticipant } = res.locals;
 
-		if (!poll) {
-			return res.status(404).send("Poll not found");
+		const polls = await Poll.find({
+			event: event._id,
+			...(isParticipant && { activeUntil: { $gte: Date.now() } }),
+		});
+
+		// TODO return answers
+
+		return res.status(200).send(polls);
+	} catch (err) {
+		console.log(err);
+		return res.status(500).send("Something went wrong...");
+	}
+});
+
+// start a poll
+router.put("/polls/:pollId/start", setCookie, checkPermission, async (req, res) => {
+	try {
+		const { poll, isOrganisator } = res.locals;
+
+		if (!isOrganisator) {
+			return res.status(403).send("You are not an organisator of this event");
 		}
 
-		const { userId } = req.session;
-		if (!poll.event.organisators.contains(userId)) {
-			return res
-				.status(401)
-				.send("You are not an organisator of the event of this poll");
+		const activeUntil = new Date();
+		activeUntil.setSeconds(activeUntil.getSeconds() + poll.duration);
+
+		poll.activeUntil = activeUntil;
+		await poll.save();
+
+		return res.status(200).send("OK");
+	} catch (err) {
+		console.log(err);
+		res.status(500).send("Something went wrong...");
+	}
+});
+
+// start a poll
+router.put("/polls/:pollId/stop", setCookie, checkPermission, async (req, res) => {
+	try {
+		const { poll, isOrganisator } = res.locals;
+
+		if (!isOrganisator) {
+			return res.status(403).send("You are not an organisator of this event");
+		}
+
+		poll.activeUntil = null;
+		await poll.save();
+
+		return res.status(200).send("OK");
+	} catch (err) {
+		console.log(err);
+		res.status(500).send("Something went wrong...");
+	}
+});
+
+// edit a poll
+router.put("/polls/:pollId", setCookie, checkPermission, async (req, res) => {
+	try {
+	} catch (err) {
+		console.log(err);
+		res.status(500).send("Something went wrong...");
+	}
+});
+
+// delete a poll
+router.delete("/polls/:pollId", setCookie, checkPermission, async (req, res) => {
+	try {
+		const { poll, isOrganisator } = res.locals;
+
+		if (!isOrganisator) {
+			return res.status(403).send("You are not an organisator of this event");
 		}
 
 		await poll.delete();
 		return res.status(200).send("OK");
 	} catch (err) {
 		console.log(err);
+		res.status(500).send("Something went wrong...");
 	}
 });
 

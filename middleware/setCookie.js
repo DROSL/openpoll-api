@@ -1,6 +1,6 @@
 const User = require("../models/user");
 
-const auth = async (req, res, next) => {
+const setCookie = async (req, res, next) => {
 	try {
 		if (!req.session.userId) {
 			const user = new User();
@@ -15,4 +15,4 @@ const auth = async (req, res, next) => {
 	}
 };
 
-module.exports = auth;
+module.exports = setCookie;

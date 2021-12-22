@@ -26,6 +26,11 @@ const EventSchema = Schema({
 		unique: true,
 		required: true,
 	},
+	secret: {
+		type: String,
+		unique: true,
+		required: true,
+	},
 	open: {
 		type: Boolean,
 		default: true,

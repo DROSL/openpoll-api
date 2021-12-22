@@ -25,6 +25,10 @@ const PollSchema = Schema({
 		type: Boolean,
 		default: false,
 	},
+	duration: {
+		type: Number,
+		default: 180,
+	},
 	activeUntil: {
 		type: Date,
 		default: null,
