@@ -4,6 +4,8 @@
 
 `DELETE /answers/{answer_id}`
 
+**Parameters**
+
 | Name   | Type   | In   | Description                          |
 | :----- | :----- | :--- | :----------------------------------- |
 | `answer_id` | string | path | **Required**. The answer id. |

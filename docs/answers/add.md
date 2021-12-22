@@ -4,6 +4,8 @@
 
 `POST /polls/{poll_id}/answers`
 
+**Parameters**
+
 | Name   | Type   | In   | Description                          |
 | :----- | :----- | :--- | :----------------------------------- |
 | `poll_id` | string | path | **Required**. The poll id. |

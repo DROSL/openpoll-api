@@ -4,6 +4,8 @@
 
 `POST /events/{code}/polls`
 
+**Parameters**
+
 | Name   | Type   | In   | Description                          |
 | :----- | :----- | :--- | :----------------------------------- |
 | `code` | string | path | **Required**. The code of the event. |
