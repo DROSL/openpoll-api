@@ -14,12 +14,6 @@
 Status: 200 OK
 ```
 
-```json
-{
-    "_id": "61c2ffd9b98abd8124e93bdf"
-}
-```
-
 **Answer not found**
 
 ```
