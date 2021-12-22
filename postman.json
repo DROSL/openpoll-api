@@ -1,0 +1,392 @@
+{
+	"info": {
+		"_postman_id": "b165a94f-f142-4494-9fd6-6e93581ce7b7",
+		"name": "wevote-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "Create event",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/events",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get event info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/events/{{code}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"{{code}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete event",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/events/{{code}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"{{code}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Join event (participant)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/events/{{code}}/join",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"{{code}}",
+								"join"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Join event (organisator)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Polls",
+			"item": [
+				{
+					"name": "Create poll",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "title",
+									"value": "How many legs does a spider have?",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/events/{{code}}/polls",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"{{code}}",
+								"polls"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get polls of event",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/events/{{code}}/polls",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"{{code}}",
+								"polls"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit poll",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/polls/{{poll_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"polls",
+								"{{poll_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Start poll",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/polls/{{poll_id}}/start",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"polls",
+								"{{poll_id}}",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Stop poll",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/polls/{{poll_id}}/stop",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"polls",
+								"{{poll_id}}",
+								"stop"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete poll",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/polls/{{poll_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"polls",
+								"{{poll_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Answers",
+			"item": [
+				{
+					"name": "Add answer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/polls/{{poll_id}}/answers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"polls",
+								"{{poll_id}}",
+								"answers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get answers of poll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/polls/{{poll_id}}/answers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"polls",
+								"{{poll_id}}",
+								"answers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit answer",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Delete answer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Votes",
+			"item": [
+				{
+					"name": "Vote for answer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/answers/{{answer_id}}/vote",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"answers",
+								"{{answer_id}}",
+								"vote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get remaining votes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Get results of poll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/polls/{{poll_id}}/votes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"polls",
+								"{{poll_id}}",
+								"votes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset results",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/polls/{{poll_id}}/votes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"polls",
+								"{{poll_id}}",
+								"votes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:4000/api"
+		},
+		{
+			"key": "code",
+			"value": "spplct"
+		},
+		{
+			"key": "poll_id",
+			"value": "61c2f51d0f592329113cf7c0"
+		},
+		{
+			"key": "answer_id",
+			"value": "61c2fa59ea2c210bf43907cc"
+		}
+	]
+}
