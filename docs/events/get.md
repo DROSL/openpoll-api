@@ -18,10 +18,18 @@ Status: 200 OK
 
 ```json
 {
-	"title": "Untitled event",
-	"code": "",
-	"secret": "only if the user is an organisator of the event",
-	"createdAt": "2021-12-21T18:34:31.618Z"
+    "title": "Untitled event",
+    "description": "",
+    "file": {
+        "_id": "61cb6c53dc8d43ed2882e5ee",
+        "name": "logo.png",
+        "size": 2056,
+        "mimetype": "image/png",
+        "createdAt": "2021-12-28T19:58:11.789Z"
+    },
+    "code": "kelpsj",
+    "secret": "only if the user is an organizer of this event",
+    "createdAt": "2021-12-28T17:45:56.460Z"
 }
 ```
 
