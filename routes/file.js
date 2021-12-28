@@ -34,6 +34,13 @@ router.post("/events/:code/file", setCookie, checkPermission, (req, res) => {
 				return res.status(500).send("File upload failed");
 			}
 
+			// delete old file
+			const oldFile = await File.findOne({ _id: event.file });
+			console.log(oldFile);
+			if (oldFile) {
+				await oldFile.deleteOne();
+			}
+
 			// create new file
 			const file = new File({
 				name: req.file.originalname,

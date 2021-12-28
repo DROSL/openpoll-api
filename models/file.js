@@ -26,8 +26,13 @@ const FileSchema = Schema({
 });
 
 FileSchema.pre("deleteOne", { document: true, query: false }, async function (next) {
-	console.log(`Delete ${this.path}`);
-	fs.unlinkSync(this.path);
+	try {
+		console.log(`Delete ${this.path}`);
+		fs.unlinkSync(this.path);
+	} catch (err) {
+		console.log(err);
+		console.log(`Failed to delete ${this.path}`);
+	}
 	next();
 });
 
