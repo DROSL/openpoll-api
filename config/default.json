@@ -3,5 +3,11 @@
 	"cookie": {
 		"secure": false,
 		"httpOnly": true
+	},
+	"upload": {
+		"dest": "uploads/",
+		"limits": {
+			"fileSize": 104857600
+		}
 	}
 }

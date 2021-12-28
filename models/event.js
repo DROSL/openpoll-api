@@ -8,6 +8,14 @@ const EventSchema = Schema({
 		type: String,
 		default: "Untitled event",
 	},
+	description: {
+		type: String,
+		default: "",
+	},
+	file: {
+		type: Schema.Types.ObjectId,
+		ref: "File",
+	},
 	organisators: [
 		{
 			type: Schema.Types.ObjectId,
