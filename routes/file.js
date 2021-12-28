@@ -22,7 +22,15 @@ router.post("/events/:code/file", setCookie, checkPermission, (req, res) => {
 		}
 
 		upload(req, res, async (err) => {
-			if (err || !req.file) {
+			if (err) {
+				if (err.code === "LIMIT_FILE_SIZE") {
+					return res.status(400).send("File too large");
+				}
+
+				return res.status(500).send("File upload failed");
+			}
+
+			if (!req.file) {
 				return res.status(500).send("File upload failed");
 			}
 
