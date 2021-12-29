@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/welcome", (req, res) => {
+const setCookie = require("../middleware/setCookie");
+
+router.get("/welcome", setCookie, (req, res) => {
 	res.status(200).send("Welcome! 🙌");
 });
 

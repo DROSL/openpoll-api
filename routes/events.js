@@ -24,7 +24,9 @@ const generateRandomString = (length, chars) => {
 router.post("/events", setCookie, async (req, res) => {
 	try {
 		const { userId } = req.session;
+		const { title } = req.body;
 		const event = new Event({
+			...(title && { title: title }),
 			code: generateRandomString(CODE_LENGTH, CODE_CHARS),
 			secret: generateRandomString(SECRET_LENGTH, SECRET_CHARS),
 			organisators: [userId],
