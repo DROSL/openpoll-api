@@ -12,7 +12,7 @@ It is necessary to join the event explicitly, as the organizer may block the acc
 
 | Name   | Type   | In   | Description                      |
 | :----- | :----- | :--- | :------------------------------- |
-| `code` | string | body | **Required**. Code of the event. |
+| `code` | string | path | **Required**. Code of the event. |
 
 **Success response**
 
@@ -46,7 +46,7 @@ Organizers can share admin access to their events with other users.
 
 | Name     | Type   | In   | Description                        |
 | :------- | :----- | :--- | :--------------------------------- |
-| `secret` | string | body | **Required**. Secret of the event. |
+| `secret` | string | path | **Required**. Secret of the event. |
 
 **Success response**
 
