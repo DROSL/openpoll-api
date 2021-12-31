@@ -24,9 +24,13 @@ const generateRandomString = (length, chars) => {
 router.post("/events", setCookie, async (req, res) => {
 	try {
 		const { userId } = req.session;
-		const { title } = req.body;
+
+		const { title, description, open } = req.body;
+
 		const event = new Event({
-			...(title && { title: title }),
+			...(title.trim() && { title: title.trim() }),
+			...(description && { description: description }),
+			...(open === Boolean(open) && { open: open }),
 			code: generateRandomString(CODE_LENGTH, CODE_CHARS),
 			secret: generateRandomString(SECRET_LENGTH, SECRET_CHARS),
 			organisators: [userId],
@@ -42,6 +46,38 @@ router.post("/events", setCookie, async (req, res) => {
 	} catch (err) {
 		console.log(err);
 		return res.status(500).send("Something went wrong...");
+	}
+});
+
+// edit event information
+router.put("/events/:code", setCookie, checkPermission, async (req, res) => {
+	try {
+		const { event, isOrganisator } = res.locals;
+
+		if (!isOrganisator) {
+			return res.status(403).send("You are not an organisator of this event");
+		}
+
+		const { title, description, open } = res.locals;
+
+		if (title && title.trim()) {
+			event.title = title.trim();
+		}
+
+		if (description) {
+			event.description = description;
+		}
+
+		if (open == true || open == false) {
+			event.open = open;
+		}
+
+		await event.save();
+
+		return res.status(200).send("OK");
+	} catch (err) {
+		console.log(err);
+		res.status(500).send("Something went wrong...");
 	}
 });
 
@@ -67,6 +103,8 @@ router.post("/events/:code/join", setCookie, async (req, res) => {
 			await event.save();
 		}
 
+		socket.to(event.code).emit("user-join", event.code);
+
 		return res.status(200).send("OK");
 	} catch (err) {
 		console.log(err);
@@ -91,6 +129,8 @@ router.post("/events/:secret/edit", setCookie, async (req, res) => {
 			event.organisators.push(userId);
 			await event.save();
 		}
+
+		socket.to(event.code).emit("user-join", event.code);
 
 		return res.status(200).send({
 			title: event.title,
@@ -130,15 +170,6 @@ router.get("/events/:code", setCookie, checkPermission, async (req, res) => {
 	}
 });
 
-// edit event information
-router.put("/events/:code", setCookie, checkPermission, async (req, res) => {
-	try {
-	} catch (err) {
-		console.log(err);
-		res.status(500).send("Something went wrong...");
-	}
-});
-
 // delete event
 router.delete("/events/:code", setCookie, checkPermission, async (req, res) => {
 	try {
@@ -149,6 +180,8 @@ router.delete("/events/:code", setCookie, checkPermission, async (req, res) => {
 		}
 
 		await event.deleteOne();
+
+		socket.to(event.code).emit("event-delete", event.code);
 
 		return res.status(200).send("OK");
 	} catch (err) {

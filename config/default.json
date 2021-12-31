@@ -1,5 +1,5 @@
 {
-	"path": "/api",
+	"path": "/",
 	"cookie": {
 		"secure": false,
 		"httpOnly": true

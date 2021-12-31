@@ -8,10 +8,11 @@ module.exports = (server, session) => {
 	io.use((socket, next) => session(socket.request, {}, next));
 
 	io.on("connection", async (socket) => {
-		console.log(`Socket ${socket.io} connected`);
+		console.log(`Socket ${socket.id} connected`);
 
 		socket.on("disconnecting", () => {
-			socket.rooms
+			console.log(socket.rooms);
+			[...socket.rooms]
 				.filter((room) => room != socket.id)
 				.forEach((room) => {
 					socket.to(room).emit("user-leave", room);
@@ -22,12 +23,13 @@ module.exports = (server, session) => {
 			console.log(`Socket ${socket.id} disconnected`);
 		});
 
-		const { userId } = socket.request.session.userId;
+		const { userId } = socket.request.session;
 		if (!userId) {
+			console.log("does not have a user id");
 			return socket.disconnect();
 		}
 
-		const events = await Event.findAll({
+		const events = await Event.find({
 			$or: [
 				{
 					participants: userId,

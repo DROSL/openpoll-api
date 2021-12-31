@@ -6,7 +6,7 @@ const Answer = require("./answer");
 const PollSchema = Schema({
 	title: {
 		type: String,
-		required: true,
+		default: "Untitled poll",
 	},
 	event: {
 		type: Schema.Types.ObjectId,
@@ -20,6 +20,10 @@ const PollSchema = Schema({
 	votesPerParticipant: {
 		type: Number,
 		default: 1,
+	},
+	allowMultipleVotesPerAnswer: {
+		type: Boolean,
+		default: false,
 	},
 	allowCustomAnswers: {
 		type: Boolean,

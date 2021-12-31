@@ -1,10 +1,14 @@
 # Socket server
 
-Connecting with:
+Code example:
 
 ```js
 import { io } from "socket.io-client";
 const socket = io();
+
+socket.on("poll-start", (code, pollId, title) => {
+    console.log(title); // "How many legs does a spider have?"
+});
 ```
 
 ## Events
@@ -85,7 +89,7 @@ answer-add
 | 1 | `code` | string | The event code. |
 | 2 | `poll_id` | string | The poll id. |
 | 3 | `answer_id` | string | The answer id. |
-| 3 | `answer_title` | string | The answer title. |
+| 4 | `answer_title` | string | The answer title. |
 
 ### Removed answer
 
@@ -118,3 +122,17 @@ vote-new
 | 1 | `code` | string | The event code. |
 | 2 | `poll_id` | string | The poll id. |
 | 3 | `answer_id` | string | The id of the answer that was voted for. |
+
+### Deleted event
+
+**Label**
+
+```
+event-delete
+```
+
+**Data**
+
+| Pos | Name | Type | Description |
+| :-- | :-- | :-- | :-- |
+| 1 | `code` | string | The code of the event that has been deleted. |

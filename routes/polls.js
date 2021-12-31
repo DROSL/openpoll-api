@@ -15,18 +15,34 @@ router.post("/events/:code/polls", setCookie, checkPermission, async (req, res) 
 			return res.status(403).send("You are not an organisator of this event");
 		}
 
-		const { title, type, votesPerParticipant, allowCustomAnswers, duration } = req.body;
-		if (!title) {
+		const {
+			title,
+			type,
+			votesPerParticipant,
+			allowMultipleVotesPerAnswer,
+			allowCustomAnswers,
+			duration,
+		} = req.body;
+
+		if (!(title && title.trim())) {
 			return res.status(400).send("Title required");
 		}
 
 		const poll = new Poll({
-			title: title,
+			title: title.trim(),
 			event: event._id,
-			votesPerParticipant: 1,
-			allowCustomAnswers: false,
-			duration: 180,
 			activeUntil: null,
+			...(["bar", "word"].includes(type) && { type: type }),
+			...(Number(duration) > 0 && { duration: Number(duration) }),
+			...(Number(votesPerParticipant) > 0 && {
+				votesPerParticipant: Number(votesPerParticipant),
+			}),
+			...(allowMultipleVotesPerAnswer === Boolean(allowMultipleVotesPerAnswer) && {
+				allowMultipleVotesPerAnswer: Boolean(allowMultipleVotesPerAnswer),
+			}),
+			...(allowCustomAnswers === Boolean(allowCustomAnswers) && {
+				allowCustomAnswers: Boolean(allowCustomAnswers),
+			}),
 		});
 		await poll.save();
 
@@ -38,6 +54,57 @@ router.post("/events/:code/polls", setCookie, checkPermission, async (req, res) 
 	} catch (err) {
 		console.log(err);
 		return res.status(500).send("Something went wrong...");
+	}
+});
+
+// edit a poll
+router.put("/polls/:pollId", setCookie, checkPermission, async (req, res) => {
+	try {
+		const { poll, isOrganisator } = res.locals;
+
+		if (!isOrganisator) {
+			return res.status(403).send("You are not an organisator of this event");
+		}
+
+		const {
+			title,
+			type,
+			duration,
+			votesPerParticipant,
+			allowMultipleVotesPerAnswer,
+			allowCustomAnswers,
+		} = req.body;
+
+		if (title && title.trim()) {
+			poll.title = title.trim();
+		}
+
+		if (["bar", "word"].includes(type)) {
+			poll.type = type;
+		}
+
+		if (Number(duration) > 0) {
+			poll.duration = Number(duration);
+		}
+
+		if (Number(votesPerParticipant) > 0) {
+			poll.votesPerParticipant = Number(votesPerParticipant);
+		}
+
+		if (allowMultipleVotesPerAnswer === Boolean(allowMultipleVotesPerAnswer)) {
+			poll.allowMultipleVotesPerAnswer = Boolean(allowMultipleVotesPerAnswer);
+		}
+
+		if (allowCustomAnswers === Boolean(allowCustomAnswers)) {
+			poll.allowCustomAnswers = Boolean(allowCustomAnswers);
+		}
+
+		await poll.save();
+
+		return res.status(200).send("OK");
+	} catch (err) {
+		console.log(err);
+		res.status(500).send("Something went wrong...");
 	}
 });
 
@@ -63,7 +130,7 @@ router.get("/events/:code/polls", setCookie, checkPermission, async (req, res) =
 // start a poll
 router.put("/polls/:pollId/start", setCookie, checkPermission, async (req, res) => {
 	try {
-		const { poll, isOrganisator } = res.locals;
+		const { event, poll, isOrganisator } = res.locals;
 
 		if (!isOrganisator) {
 			return res.status(403).send("You are not an organisator of this event");
@@ -75,6 +142,8 @@ router.put("/polls/:pollId/start", setCookie, checkPermission, async (req, res) 
 		poll.activeUntil = activeUntil;
 		await poll.save();
 
+		socket.to(event.code).emit("poll-start", event.code, poll._id, poll.title);
+
 		return res.status(200).send("OK");
 	} catch (err) {
 		console.log(err);
@@ -85,7 +154,7 @@ router.put("/polls/:pollId/start", setCookie, checkPermission, async (req, res) 
 // start a poll
 router.put("/polls/:pollId/stop", setCookie, checkPermission, async (req, res) => {
 	try {
-		const { poll, isOrganisator } = res.locals;
+		const { event, poll, isOrganisator } = res.locals;
 
 		if (!isOrganisator) {
 			return res.status(403).send("You are not an organisator of this event");
@@ -94,16 +163,9 @@ router.put("/polls/:pollId/stop", setCookie, checkPermission, async (req, res) =
 		poll.activeUntil = null;
 		await poll.save();
 
-		return res.status(200).send("OK");
-	} catch (err) {
-		console.log(err);
-		res.status(500).send("Something went wrong...");
-	}
-});
+		socket.to(event.code).emit("poll-end", event.code, poll._id);
 
-// edit a poll
-router.put("/polls/:pollId", setCookie, checkPermission, async (req, res) => {
-	try {
+		return res.status(200).send("OK");
 	} catch (err) {
 		console.log(err);
 		res.status(500).send("Something went wrong...");

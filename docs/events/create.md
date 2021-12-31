@@ -4,6 +4,14 @@
 
 `POST /events`
 
+**Parameters**
+
+| Name   | Type   | In   | Description                          |
+| :----- | :----- | :--- | :----------------------------------- |
+| `title` | string | body | The event title. Default `Untitled event`. |
+| `description` | string | body | The event description. |
+| `open` | boolean | body | Set to `true` if new participants can join the event. Default `true`. |
+
 **Success response**
 
 ```

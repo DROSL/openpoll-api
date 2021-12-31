@@ -51,6 +51,8 @@ app.use(config.path, router);
 const socket = require("./socket")(http, session);
 global.socket = socket;
 
+app.use(express.static("public"));
+
 app.get("/", (req, res) => {
 	res.status(200).send("OK");
 });

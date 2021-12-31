@@ -14,7 +14,7 @@ router.post("/polls/:pollId/answers", setCookie, checkPermission, async (req, re
 			return res.status(400).send("Title required");
 		}
 
-		const { poll, isParticipant } = res.locals;
+		const { event, poll, isParticipant } = res.locals;
 
 		const oldAnswer = await Answer.findOne({
 			title: title.trim(),
@@ -35,8 +35,10 @@ router.post("/polls/:pollId/answers", setCookie, checkPermission, async (req, re
 			poll: poll._id,
 			hidden: Boolean(hidden),
 		});
-
 		await answer.save();
+
+		socket.to(event.code).emit("answer-add", event.code, poll._id, answer._id, answer.title);
+
 		return res
 			.status(200)
 			.json({ _id: answer._id, title: answer.title, hidden: answer.hidden });

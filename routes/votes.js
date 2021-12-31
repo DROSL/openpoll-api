@@ -18,12 +18,14 @@ router.post("/answers/:answerId/vote", setCookie, checkPermission, async (req, r
 		}
 
 		const { userId } = req.session;
-		const oldVote = await Vote.findOne({
-			answer: answer._id,
-			participant: userId,
-		});
-		if (oldVote) {
-			return res.status(403).send("You have already voted for this answer");
+		if (!poll.allowMultipleVotesPerAnswer) {
+			const oldVote = await Vote.findOne({
+				answer: answer._id,
+				participant: userId,
+			});
+			if (oldVote) {
+				return res.status(403).send("You have already voted for this answer");
+			}
 		}
 
 		const votesPerParticipant = poll.votesPerParticipant;
