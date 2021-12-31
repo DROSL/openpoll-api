@@ -11,7 +11,6 @@ module.exports = (server, session) => {
 		console.log(`Socket ${socket.id} connected`);
 
 		socket.on("disconnecting", () => {
-			console.log(socket.rooms);
 			[...socket.rooms]
 				.filter((room) => room != socket.id)
 				.forEach((room) => {
