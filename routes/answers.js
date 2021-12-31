@@ -37,7 +37,7 @@ router.post("/polls/:pollId/answers", setCookie, checkPermission, async (req, re
 		});
 		await answer.save();
 
-		socket.to(event.code).emit("answer-add", event.code, poll._id, answer._id, answer.title);
+		io.to(event.code).emit("answer-add", event.code, poll._id, answer._id, answer.title);
 
 		return res
 			.status(200)

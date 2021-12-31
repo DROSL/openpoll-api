@@ -1,11 +1,15 @@
 const socketio = require("socket.io");
 
+const setSocketCookie = require("./middleware/setSocketCookie");
+
 const Event = require("./models/event");
 
 module.exports = (server, session) => {
 	const io = socketio(server);
 
 	io.use((socket, next) => session(socket.request, {}, next));
+
+	io.use(setSocketCookie);
 
 	io.on("connection", async (socket) => {
 		console.log(`Socket ${socket.id} connected`);
@@ -23,10 +27,7 @@ module.exports = (server, session) => {
 		});
 
 		const { userId } = socket.request.session;
-		if (!userId) {
-			console.log("does not have a user id");
-			return socket.disconnect();
-		}
+		socket.userId = userId;
 
 		const events = await Event.find({
 			$or: [
@@ -39,8 +40,8 @@ module.exports = (server, session) => {
 			],
 		});
 		events.forEach((event) => {
-			socket.join(event.code);
 			socket.to(event.code).emit("user-join", event.code);
+			socket.join(event.code);
 		});
 	});
 

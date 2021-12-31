@@ -34,6 +34,12 @@ The organisator has closed the event for new participants.
 Status: 403 Forbidden
 ```
 
+**User has already joined**
+
+```
+Status: 409 Conflict
+```
+
 ## As an organisator
 
 Organizers can share admin access to their events with other users.
@@ -69,4 +75,10 @@ The secret is wrong.
 
 ```
 Status: 404 Not Found
+```
+
+**User has already joined**
+
+```
+Status: 409 Conflict
 ```

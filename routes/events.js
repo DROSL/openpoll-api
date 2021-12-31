@@ -98,12 +98,21 @@ router.post("/events/:code/join", setCookie, async (req, res) => {
 		}
 
 		const { userId } = req.session;
-		if (!event.participants.includes(userId)) {
-			event.participants.push(userId);
-			await event.save();
+		if (event.participants.includes(userId)) {
+			return res.status(409).send("You have already joined this room");
 		}
 
-		socket.to(event.code).emit("user-join", event.code);
+		event.participants.push(userId);
+		await event.save();
+
+		io.to(event.code).emit("user-join", event.code);
+
+		// add socket to room
+		const sockets = await io.fetchSockets();
+		const socket = sockets.filter((s) => s.userId === userId)[0];
+		if (socket) {
+			socket.join(event.code);
+		}
 
 		return res.status(200).send("OK");
 	} catch (err) {
@@ -125,12 +134,21 @@ router.post("/events/:secret/edit", setCookie, async (req, res) => {
 		}
 
 		const { userId } = req.session;
-		if (!event.organisators.includes(userId)) {
-			event.organisators.push(userId);
-			await event.save();
+		if (event.organisators.includes(userId)) {
+			return res.status(409).send("You have already joined this room");
 		}
 
-		socket.to(event.code).emit("user-join", event.code);
+		event.organisators.push(userId);
+		await event.save();
+
+		io.to(event.code).emit("user-join", event.code);
+
+		// add socket to room
+		const sockets = await io.fetchSockets();
+		const socket = sockets.filter((s) => s.userId === userId)[0];
+		if (socket) {
+			socket.join(event.code);
+		}
 
 		return res.status(200).send({
 			title: event.title,
@@ -181,7 +199,8 @@ router.delete("/events/:code", setCookie, checkPermission, async (req, res) => {
 
 		await event.deleteOne();
 
-		socket.to(event.code).emit("event-delete", event.code);
+		io.to(event.code).emit("event-delete", event.code);
+		io.socketsLeave(event.code);
 
 		return res.status(200).send("OK");
 	} catch (err) {

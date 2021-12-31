@@ -142,7 +142,7 @@ router.put("/polls/:pollId/start", setCookie, checkPermission, async (req, res) 
 		poll.activeUntil = activeUntil;
 		await poll.save();
 
-		socket.to(event.code).emit("poll-start", event.code, poll._id, poll.title);
+		io.to(event.code).emit("poll-start", event.code, poll._id, poll.title);
 
 		return res.status(200).send("OK");
 	} catch (err) {
@@ -163,7 +163,7 @@ router.put("/polls/:pollId/stop", setCookie, checkPermission, async (req, res) =
 		poll.activeUntil = null;
 		await poll.save();
 
-		socket.to(event.code).emit("poll-end", event.code, poll._id);
+		io.to(event.code).emit("poll-end", event.code, poll._id);
 
 		return res.status(200).send("OK");
 	} catch (err) {

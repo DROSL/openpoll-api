@@ -49,7 +49,7 @@ const router = require("./router");
 app.use(config.path, router);
 
 const socket = require("./socket")(http, session);
-global.socket = socket;
+global.io = socket;
 
 app.use(express.static("public"));
 

@@ -41,7 +41,7 @@ router.post("/answers/:answerId/vote", setCookie, checkPermission, async (req, r
 		});
 		await vote.save();
 
-		socket.to(event.code).emit("vote-new", event.code, poll._id, answer._id);
+		io.to(event.code).emit("vote-new", event.code, poll._id, answer._id);
 
 		return res.status(200).json(vote);
 	} catch (err) {
