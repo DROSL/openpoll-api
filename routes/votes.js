@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-const mongoose = require("mongoose");
-
 const setCookie = require("../middleware/setCookie");
 const checkPermission = require("../middleware/checkPermission");
 
@@ -12,7 +10,7 @@ const Vote = require("../models/vote");
 // vote for an answer
 router.post("/answers/:answerId/vote", setCookie, checkPermission, async (req, res) => {
 	try {
-		const { answer, poll } = res.locals;
+		const { event, poll, answer } = res.locals;
 		if (answer.hidden) {
 			return res.status(404).send("Answer not found");
 		}
@@ -42,6 +40,8 @@ router.post("/answers/:answerId/vote", setCookie, checkPermission, async (req, r
 			participant: userId,
 		});
 		await vote.save();
+
+		socket.to(event.code).emit("vote-new", event.code, poll._id, answer._id);
 
 		return res.status(200).json(vote);
 	} catch (err) {
