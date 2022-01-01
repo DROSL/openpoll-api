@@ -1,4 +1,4 @@
-# Get event info
+# Get an event
 
 **HTTP Request**
 

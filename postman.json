@@ -15,8 +15,12 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/events",
-							"host": ["{{base_url}}"],
-							"path": ["events"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events"
+							]
 						}
 					},
 					"response": []
@@ -28,8 +32,14 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/events/{{code}}/join",
-							"host": ["{{base_url}}"],
-							"path": ["events", "{{code}}", "join"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"{{code}}",
+								"join"
+							]
 						}
 					},
 					"response": []
@@ -46,27 +56,37 @@
 					"response": []
 				},
 				{
-					"name": "Edit event info",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/events/{{code}}",
-							"host": ["{{base_url}}"],
-							"path": ["events", "{{code}}"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get event info",
+					"name": "Get event",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/events/{{code}}",
-							"host": ["{{base_url}}"],
-							"path": ["events", "{{code}}"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"{{code}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit event",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/events/{{code}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"{{code}}"
+							]
 						}
 					},
 					"response": []
@@ -78,8 +98,13 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/events/{{code}}",
-							"host": ["{{base_url}}"],
-							"path": ["events", "{{code}}"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"{{code}}"
+							]
 						}
 					},
 					"response": []
@@ -106,8 +131,14 @@
 						},
 						"url": {
 							"raw": "{{base_url}}/events/{{code}}/file",
-							"host": ["{{base_url}}"],
-							"path": ["events", "{{code}}", "file"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"{{code}}",
+								"file"
+							]
 						}
 					},
 					"response": []
@@ -119,8 +150,14 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/events/{{code}}/file",
-							"host": ["{{base_url}}"],
-							"path": ["events", "{{code}}", "file"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"{{code}}",
+								"file"
+							]
 						}
 					},
 					"response": []
@@ -132,8 +169,14 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/events/{{code}}/file",
-							"host": ["{{base_url}}"],
-							"path": ["events", "{{code}}", "file"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"{{code}}",
+								"file"
+							]
 						}
 					},
 					"response": []
@@ -160,8 +203,14 @@
 						},
 						"url": {
 							"raw": "{{base_url}}/events/{{code}}/polls",
-							"host": ["{{base_url}}"],
-							"path": ["events", "{{code}}", "polls"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"{{code}}",
+								"polls"
+							]
 						}
 					},
 					"response": []
@@ -173,8 +222,32 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/events/{{code}}/polls",
-							"host": ["{{base_url}}"],
-							"path": ["events", "{{code}}", "polls"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"events",
+								"{{code}}",
+								"polls"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get poll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/polls/{{poll_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"polls",
+								"{{poll_id}}"
+							]
 						}
 					},
 					"response": []
@@ -186,8 +259,13 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/polls/{{poll_id}}",
-							"host": ["{{base_url}}"],
-							"path": ["polls", "{{poll_id}}"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"polls",
+								"{{poll_id}}"
+							]
 						}
 					},
 					"response": []
@@ -199,8 +277,14 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/polls/{{poll_id}}/start",
-							"host": ["{{base_url}}"],
-							"path": ["polls", "{{poll_id}}", "start"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"polls",
+								"{{poll_id}}",
+								"start"
+							]
 						}
 					},
 					"response": []
@@ -212,8 +296,14 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/polls/{{poll_id}}/stop",
-							"host": ["{{base_url}}"],
-							"path": ["polls", "{{poll_id}}", "stop"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"polls",
+								"{{poll_id}}",
+								"stop"
+							]
 						}
 					},
 					"response": []
@@ -225,8 +315,13 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/polls/{{poll_id}}",
-							"host": ["{{base_url}}"],
-							"path": ["polls", "{{poll_id}}"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"polls",
+								"{{poll_id}}"
+							]
 						}
 					},
 					"response": []
@@ -243,8 +338,14 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/polls/{{poll_id}}/answers",
-							"host": ["{{base_url}}"],
-							"path": ["polls", "{{poll_id}}", "answers"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"polls",
+								"{{poll_id}}",
+								"answers"
+							]
 						}
 					},
 					"response": []
@@ -256,8 +357,14 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/polls/{{poll_id}}/answers",
-							"host": ["{{base_url}}"],
-							"path": ["polls", "{{poll_id}}", "answers"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"polls",
+								"{{poll_id}}",
+								"answers"
+							]
 						}
 					},
 					"response": []
@@ -296,8 +403,14 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/answers/{{answer_id}}/vote",
-							"host": ["{{base_url}}"],
-							"path": ["answers", "{{answer_id}}", "vote"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"answers",
+								"{{answer_id}}",
+								"vote"
+							]
 						}
 					},
 					"response": []
@@ -320,8 +433,14 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/polls/{{poll_id}}/votes",
-							"host": ["{{base_url}}"],
-							"path": ["polls", "{{poll_id}}", "votes"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"polls",
+								"{{poll_id}}",
+								"votes"
+							]
 						}
 					},
 					"response": []
@@ -333,8 +452,14 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/polls/{{poll_id}}/votes",
-							"host": ["{{base_url}}"],
-							"path": ["polls", "{{poll_id}}", "votes"]
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"polls",
+								"{{poll_id}}",
+								"votes"
+							]
 						}
 					},
 					"response": []
@@ -347,29 +472,33 @@
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
-				"exec": [""]
+				"exec": [
+					""
+				]
 			}
 		},
 		{
 			"listen": "test",
 			"script": {
 				"type": "text/javascript",
-				"exec": [""]
+				"exec": [
+					""
+				]
 			}
 		}
 	],
 	"variable": [
 		{
 			"key": "base_url",
-			"value": "http://localhost:4000/api"
+			"value": "http://localhost:4000"
 		},
 		{
 			"key": "code",
-			"value": "kelpsj"
+			"value": "cexlxv"
 		},
 		{
 			"key": "poll_id",
-			"value": "61c2f51d0f592329113cf7c0"
+			"value": "61d0562f21c2b25b0089a359"
 		},
 		{
 			"key": "answer_id",

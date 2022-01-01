@@ -118,9 +118,23 @@ router.get("/events/:code/polls", setCookie, checkPermission, async (req, res) =
 			...(isParticipant && { activeUntil: { $gte: Date.now() } }),
 		});
 
-		// TODO return answers
+		// TODO: return answers
 
 		return res.status(200).send(polls);
+	} catch (err) {
+		console.log(err);
+		return res.status(500).send("Something went wrong...");
+	}
+});
+
+// get a poll by id
+router.get("/polls/:pollId", setCookie, checkPermission, async (req, res) => {
+	try {
+		const { poll } = res.locals;
+
+		// TODO: return answers
+
+		return res.status(200).send(poll);
 	} catch (err) {
 		console.log(err);
 		return res.status(500).send("Something went wrong...");
