@@ -2,7 +2,7 @@
 
 **HTTP Request**
 
-`POST /answers/{answer_id}`
+`POST /answers/{answer_id}/vote`
 
 **Parameters**
 

@@ -49,7 +49,7 @@ const EventSchema = Schema({
 	},
 });
 
-EventSchema.pre("remove", async function (next) {
+EventSchema.pre("deleteOne", { document: true, query: false }, async function (next) {
 	await Poll.deleteMany({ event: this._id });
 	next();
 });

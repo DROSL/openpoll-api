@@ -49,6 +49,33 @@ router.post("/events", setCookie, async (req, res) => {
 	}
 });
 
+// get event information
+router.get("/events/:code", setCookie, checkPermission, async (req, res) => {
+	try {
+		const { event, isOrganisator } = res.locals;
+
+		const file = event.file ? await File.findOne({ _id: event.file._id }) : null;
+
+		return res.status(200).json({
+			title: event.title,
+			description: event.description,
+			file: file && {
+				_id: file._id,
+				name: file.name,
+				size: file.size,
+				mimetype: file.mimetype,
+				createdAt: file.createdAt,
+			},
+			code: event.code,
+			createdAt: event.createdAt,
+			...(isOrganisator && { secret: event.secret }),
+		});
+	} catch (err) {
+		console.log(err);
+		return res.status(500).send("Something went wrong...");
+	}
+});
+
 // edit event information
 router.put("/events/:code", setCookie, checkPermission, async (req, res) => {
 	try {
@@ -58,7 +85,7 @@ router.put("/events/:code", setCookie, checkPermission, async (req, res) => {
 			return res.status(403).send("You are not an organisator of this event");
 		}
 
-		const { title, description, open } = res.locals;
+		const { title, description, open } = req.body;
 
 		if (title && title.trim()) {
 			event.title = title.trim();
@@ -158,33 +185,6 @@ router.post("/events/:secret/edit", setCookie, async (req, res) => {
 	} catch (err) {
 		console.log(err);
 		return res.status(500).send("Something went wrong");
-	}
-});
-
-// get event information
-router.get("/events/:code", setCookie, checkPermission, async (req, res) => {
-	try {
-		const { event, isOrganisator } = res.locals;
-
-		const file = event.file ? await File.findOne({ _id: event.file._id }) : null;
-
-		return res.status(200).json({
-			title: event.title,
-			description: event.description,
-			file: file && {
-				_id: file._id,
-				name: file.name,
-				size: file.size,
-				mimetype: file.mimetype,
-				createdAt: file.createdAt,
-			},
-			code: event.code,
-			createdAt: event.createdAt,
-			...(isOrganisator && { secret: event.secret }),
-		});
-	} catch (err) {
-		console.log(err);
-		return res.status(500).send("Something went wrong...");
 	}
 });
 

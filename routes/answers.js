@@ -106,7 +106,25 @@ router.put("/answers/:answerId", setCookie, checkPermission, async (req, res) =>
 		});
 	} catch (err) {
 		console.log(err);
-		res.status(500).send("Something went wrong...");
+		return res.status(500).send("Something went wrong...");
+	}
+});
+
+// delete an answer
+router.delete("/answers/:answerId", setCookie, checkPermission, async (req, res) => {
+	try {
+		const { answer, isOrganisator } = res.locals;
+
+		if (!isOrganisator) {
+			return res.status(403).send("You are not an organisator of this event");
+		}
+
+		await answer.deleteOne();
+
+		return res.status(200).send("OK");
+	} catch (err) {
+		console.log(err);
+		return res.status(500).send("Something went wrong...");
 	}
 });
 

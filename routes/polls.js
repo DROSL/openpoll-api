@@ -195,7 +195,8 @@ router.delete("/polls/:pollId", setCookie, checkPermission, async (req, res) => 
 			return res.status(403).send("You are not an organisator of this event");
 		}
 
-		await poll.delete();
+		await poll.deleteOne();
+
 		return res.status(200).send("OK");
 	} catch (err) {
 		console.log(err);

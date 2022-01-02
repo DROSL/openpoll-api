@@ -19,7 +19,7 @@ const AnswerSchema = Schema({
 	},
 });
 
-AnswerSchema.pre("remove", async function (next) {
+AnswerSchema.pre("deleteOne", { document: true, query: false }, async function (next) {
 	await Vote.deleteMany({ answer: this._id });
 	next();
 });

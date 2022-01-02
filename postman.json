@@ -15,12 +15,8 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/events",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"events"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["events"]
 						}
 					},
 					"response": []
@@ -32,14 +28,8 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/events/{{code}}/join",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"events",
-								"{{code}}",
-								"join"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["events", "{{code}}", "join"]
 						}
 					},
 					"response": []
@@ -62,13 +52,8 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/events/{{code}}",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"events",
-								"{{code}}"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["events", "{{code}}"]
 						}
 					},
 					"response": []
@@ -80,13 +65,8 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/events/{{code}}",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"events",
-								"{{code}}"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["events", "{{code}}"]
 						}
 					},
 					"response": []
@@ -98,13 +78,8 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/events/{{code}}",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"events",
-								"{{code}}"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["events", "{{code}}"]
 						}
 					},
 					"response": []
@@ -131,14 +106,8 @@
 						},
 						"url": {
 							"raw": "{{base_url}}/events/{{code}}/file",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"events",
-								"{{code}}",
-								"file"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["events", "{{code}}", "file"]
 						}
 					},
 					"response": []
@@ -150,14 +119,8 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/events/{{code}}/file",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"events",
-								"{{code}}",
-								"file"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["events", "{{code}}", "file"]
 						}
 					},
 					"response": []
@@ -169,14 +132,8 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/events/{{code}}/file",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"events",
-								"{{code}}",
-								"file"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["events", "{{code}}", "file"]
 						}
 					},
 					"response": []
@@ -203,14 +160,8 @@
 						},
 						"url": {
 							"raw": "{{base_url}}/events/{{code}}/polls",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"events",
-								"{{code}}",
-								"polls"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["events", "{{code}}", "polls"]
 						}
 					},
 					"response": []
@@ -222,14 +173,8 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/events/{{code}}/polls",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"events",
-								"{{code}}",
-								"polls"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["events", "{{code}}", "polls"]
 						}
 					},
 					"response": []
@@ -241,13 +186,8 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/polls/{{poll_id}}",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"polls",
-								"{{poll_id}}"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["polls", "{{poll_id}}"]
 						}
 					},
 					"response": []
@@ -259,13 +199,8 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/polls/{{poll_id}}",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"polls",
-								"{{poll_id}}"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["polls", "{{poll_id}}"]
 						}
 					},
 					"response": []
@@ -277,14 +212,8 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/polls/{{poll_id}}/start",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"polls",
-								"{{poll_id}}",
-								"start"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["polls", "{{poll_id}}", "start"]
 						}
 					},
 					"response": []
@@ -296,14 +225,8 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/polls/{{poll_id}}/stop",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"polls",
-								"{{poll_id}}",
-								"stop"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["polls", "{{poll_id}}", "stop"]
 						}
 					},
 					"response": []
@@ -315,13 +238,8 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/polls/{{poll_id}}",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"polls",
-								"{{poll_id}}"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["polls", "{{poll_id}}"]
 						}
 					},
 					"response": []
@@ -338,14 +256,8 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/polls/{{poll_id}}/answers",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"polls",
-								"{{poll_id}}",
-								"answers"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["polls", "{{poll_id}}", "answers"]
 						}
 					},
 					"response": []
@@ -357,14 +269,8 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/polls/{{poll_id}}/answers",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"polls",
-								"{{poll_id}}",
-								"answers"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["polls", "{{poll_id}}", "answers"]
 						}
 					},
 					"response": []
@@ -374,8 +280,25 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "title",
+									"value": "A new title",
+									"type": "string"
+								},
+								{
+									"key": "hidden",
+									"value": "false",
+									"type": "string"
+								}
+							]
+						},
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/answers/{{answer_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["answers", "{{answer_id}}"]
 						}
 					},
 					"response": []
@@ -386,7 +309,9 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/answers/{{answer_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["answers", "{{answer_id}}"]
 						}
 					},
 					"response": []
@@ -403,14 +328,8 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/answers/{{answer_id}}/vote",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"answers",
-								"{{answer_id}}",
-								"vote"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["answers", "{{answer_id}}", "vote"]
 						}
 					},
 					"response": []
@@ -433,14 +352,8 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/polls/{{poll_id}}/votes",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"polls",
-								"{{poll_id}}",
-								"votes"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["polls", "{{poll_id}}", "votes"]
 						}
 					},
 					"response": []
@@ -452,14 +365,8 @@
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/polls/{{poll_id}}/votes",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"polls",
-								"{{poll_id}}",
-								"votes"
-							]
+							"host": ["{{base_url}}"],
+							"path": ["polls", "{{poll_id}}", "votes"]
 						}
 					},
 					"response": []
@@ -472,18 +379,14 @@
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
-				"exec": [
-					""
-				]
+				"exec": [""]
 			}
 		},
 		{
 			"listen": "test",
 			"script": {
 				"type": "text/javascript",
-				"exec": [
-					""
-				]
+				"exec": [""]
 			}
 		}
 	],

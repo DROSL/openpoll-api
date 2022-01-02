@@ -36,6 +36,7 @@ router.post("/answers/:answerId/vote", setCookie, checkPermission, async (req, r
 		}
 
 		const vote = new Vote({
+			poll: poll._id,
 			answer: answer._id,
 			participant: userId,
 		});

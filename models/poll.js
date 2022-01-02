@@ -43,7 +43,7 @@ const PollSchema = Schema({
 	},
 });
 
-PollSchema.pre("remove", async function (next) {
+PollSchema.pre("deleteOne", { document: true, query: false }, async function (next) {
 	await Answer.deleteMany({ poll: this._id });
 	next();
 });
