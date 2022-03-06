@@ -13,10 +13,6 @@ const PollSchema = Schema({
 		ref: "Event",
 		required: true,
 	},
-	type: {
-		type: String,
-		default: "bar",
-	},
 	votesPerParticipant: {
 		type: Number,
 		default: 1,
@@ -29,13 +25,13 @@ const PollSchema = Schema({
 		type: Boolean,
 		default: false,
 	},
-	duration: {
-		type: Number,
-		default: 180,
+	started: {
+		type: Boolean,
+		default: false,
 	},
-	activeUntil: {
-		type: Date,
-		default: null,
+	stopped: {
+		type: Boolean,
+		default: false,
 	},
 	createdAt: {
 		type: Date,

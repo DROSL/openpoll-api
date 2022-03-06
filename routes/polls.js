@@ -5,6 +5,7 @@ const setCookie = require("../middleware/setCookie");
 const checkPermission = require("../middleware/checkPermission");
 
 const Poll = require("../models/poll");
+const Answer = require("../models/answer");
 
 // create new poll
 router.post("/events/:code/polls", setCookie, checkPermission, async (req, res) => {
@@ -17,40 +18,45 @@ router.post("/events/:code/polls", setCookie, checkPermission, async (req, res) 
 
 		const {
 			title,
-			type,
+			answers,
+			allowCustomAnswers,
 			votesPerParticipant,
 			allowMultipleVotesPerAnswer,
-			allowCustomAnswers,
-			duration,
 		} = req.body;
 
 		if (!(title && title.trim())) {
 			return res.status(400).send("Title required");
 		}
 
+		const answers_ = answers.filter((answer) => answer.trim());
+		if (answers_.length < 1) {
+			return res.status(400).send("At least 1 answer required");
+		}
+
 		const poll = new Poll({
 			title: title.trim(),
 			event: event._id,
-			activeUntil: null,
-			...(["bar", "word"].includes(type) && { type: type }),
-			...(Number(duration) > 0 && { duration: Number(duration) }),
+			...(allowCustomAnswers === Boolean(allowCustomAnswers) && {
+				allowCustomAnswers: Boolean(allowCustomAnswers),
+			}),
 			...(Number(votesPerParticipant) > 0 && {
 				votesPerParticipant: Number(votesPerParticipant),
 			}),
 			...(allowMultipleVotesPerAnswer === Boolean(allowMultipleVotesPerAnswer) && {
 				allowMultipleVotesPerAnswer: Boolean(allowMultipleVotesPerAnswer),
 			}),
-			...(allowCustomAnswers === Boolean(allowCustomAnswers) && {
-				allowCustomAnswers: Boolean(allowCustomAnswers),
-			}),
 		});
 		await poll.save();
 
-		// TODO: Add answers
+		await Answer.insertMany(
+			answers_.map((answer) => ({
+				title: answer.trim(),
+				poll: poll._id,
+				hidden: false,
+			}))
+		);
 
-		return res.status(200).json({
-			_id: poll._id,
-		});
+		return res.status(200).json(poll);
 	} catch (err) {
 		console.log(err);
 		return res.status(500).send("Something went wrong...");
@@ -68,23 +74,18 @@ router.put("/polls/:pollId", setCookie, checkPermission, async (req, res) => {
 
 		const {
 			title,
-			type,
-			duration,
+			answers,
+			allowCustomAnswers,
 			votesPerParticipant,
 			allowMultipleVotesPerAnswer,
-			allowCustomAnswers,
 		} = req.body;
 
 		if (title && title.trim()) {
 			poll.title = title.trim();
 		}
 
-		if (["bar", "word"].includes(type)) {
-			poll.type = type;
-		}
-
-		if (Number(duration) > 0) {
-			poll.duration = Number(duration);
+		if (allowCustomAnswers === Boolean(allowCustomAnswers)) {
+			poll.allowCustomAnswers = Boolean(allowCustomAnswers);
 		}
 
 		if (Number(votesPerParticipant) > 0) {
@@ -95,13 +96,9 @@ router.put("/polls/:pollId", setCookie, checkPermission, async (req, res) => {
 			poll.allowMultipleVotesPerAnswer = Boolean(allowMultipleVotesPerAnswer);
 		}
 
-		if (allowCustomAnswers === Boolean(allowCustomAnswers)) {
-			poll.allowCustomAnswers = Boolean(allowCustomAnswers);
-		}
-
 		await poll.save();
 
-		return res.status(200).send("OK");
+		return res.status(200).send(poll);
 	} catch (err) {
 		console.log(err);
 		res.status(500).send("Something went wrong...");
@@ -115,7 +112,7 @@ router.get("/events/:code/polls", setCookie, checkPermission, async (req, res) =
 
 		const polls = await Poll.find({
 			event: event._id,
-			...(isParticipant && { activeUntil: { $gte: Date.now() } }),
+			...(isParticipant && { started: true }),
 		});
 
 		// TODO: return answers
@@ -150,10 +147,9 @@ router.put("/polls/:pollId/start", setCookie, checkPermission, async (req, res) 
 			return res.status(403).send("You are not an organisator of this event");
 		}
 
-		const activeUntil = new Date();
-		activeUntil.setSeconds(activeUntil.getSeconds() + poll.duration);
+		// TODO: check if other polls are currently active
 
-		poll.activeUntil = activeUntil;
+		poll.started = true;
 		await poll.save();
 
 		io.to(event.code).emit("poll-start", event.code, poll._id, poll.title);
@@ -174,7 +170,7 @@ router.put("/polls/:pollId/stop", setCookie, checkPermission, async (req, res) =
 			return res.status(403).send("You are not an organisator of this event");
 		}
 
-		poll.activeUntil = null;
+		poll.stopped = true;
 		await poll.save();
 
 		io.to(event.code).emit("poll-end", event.code, poll._id);

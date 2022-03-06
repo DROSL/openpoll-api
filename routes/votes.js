@@ -11,6 +11,10 @@ const Vote = require("../models/vote");
 router.post("/answers/:answerId/vote", setCookie, checkPermission, async (req, res) => {
 	try {
 		const { event, poll, answer } = res.locals;
+		if (!(poll.started && !poll.stopped)) {
+			return res.status(403).send("Poll not active (anymore)");
+		}
+
 		if (answer.hidden) {
 			return res.status(404).send("Answer not found");
 		}
@@ -51,12 +55,28 @@ router.post("/answers/:answerId/vote", setCookie, checkPermission, async (req, r
 	}
 });
 
-// get results of poll
+// get my votes
 router.get("/polls/:pollId/votes", setCookie, checkPermission, async (req, res) => {
+	try {
+		const { poll, userId } = res.locals;
+
+		const votes = await Vote.find({
+			poll: poll._id,
+			participant: userId,
+		});
+
+		return res.status(200).json(votes);
+	} catch (err) {
+		console.log(err);
+		return res.status(500).send("Something went wrong...");
+	}
+});
+
+// get results of poll
+router.get("/polls/:pollId/results", setCookie, checkPermission, async (req, res) => {
 	try {
 		const { poll, isParticipant } = res.locals;
 
-		console.log(poll._id);
 		const answers = await Answer.aggregate([
 			{
 				$match: {

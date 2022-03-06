@@ -50,7 +50,7 @@ const checkPermission = async (req, res, next) => {
 			return res.status(401).send("You have to join this event first to participate");
 		}
 
-		if (isParticipant && poll && Date.now() > poll.activeUntil) {
+		if (isParticipant && poll && !poll.started) {
 			return res.status(403).send("Poll is not active anymore");
 		}
 
@@ -61,6 +61,7 @@ const checkPermission = async (req, res, next) => {
 		res.locals.answer = answer;
 		res.locals.poll = poll;
 		res.locals.event = event;
+		res.locals.userId = userId;
 		res.locals.isOrganisator = isOrganisator;
 		res.locals.isParticipant = isParticipant;
 
