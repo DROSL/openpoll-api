@@ -14,7 +14,7 @@ const setCookie = async (socket, next) => {
 
 		next();
 	} catch (err) {
-		return res.status(500).send("Something went wrong...");
+		console.log(err);
 	}
 };
 

@@ -41,6 +41,7 @@ router.post("/events", setCookie, async (req, res) => {
 			title: event.title,
 			code: event.code,
 			secret: event.secret,
+			open: event.open,
 			createdAt: event.createdAt,
 		});
 	} catch (err) {
@@ -67,6 +68,7 @@ router.get("/events/:code", setCookie, checkPermission, async (req, res) => {
 				createdAt: file.createdAt,
 			},
 			code: event.code,
+			open: event.open,
 			createdAt: event.createdAt,
 			...(isOrganisator && { secret: event.secret }),
 		});

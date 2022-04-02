@@ -161,7 +161,7 @@ router.put("/polls/:pollId/start", setCookie, checkPermission, async (req, res) 
 	}
 });
 
-// start a poll
+// stop a poll
 router.put("/polls/:pollId/stop", setCookie, checkPermission, async (req, res) => {
 	try {
 		const { event, poll, isOrganisator } = res.locals;
@@ -173,7 +173,7 @@ router.put("/polls/:pollId/stop", setCookie, checkPermission, async (req, res) =
 		poll.stopped = true;
 		await poll.save();
 
-		io.to(event.code).emit("poll-end", event.code, poll._id);
+		io.to(event.code).emit("poll-stop", event.code, poll._id);
 
 		return res.status(200).send("OK");
 	} catch (err) {
