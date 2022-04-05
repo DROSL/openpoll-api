@@ -109,4 +109,28 @@ router.get("/polls/:pollId/results", setCookie, checkPermission, async (req, res
 	}
 });
 
+// delete results of poll
+router.delete("/polls/:pollId/results", setCookie, checkPermission, async (req, res) => {
+	try {
+		const { poll, isOrganisator } = res.locals;
+
+		if (!isOrganisator) {
+			return res.status(403).send("You are not an organisator of this event");
+		}
+
+		poll.started = false;
+		poll.stopped = false;
+		await poll.save();
+
+		await Vote.deleteMany({
+			poll: poll._id
+		});
+
+		return res.status(200).send("OK");
+	} catch (err) {
+		console.log(err);
+		return res.status(500).send("Something went wrong...");
+	}
+});
+
 module.exports = router;

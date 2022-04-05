@@ -31,7 +31,7 @@ Set the following environment variables:
 
 | Name | Type | Description |
 | :--- | :--- | :--- |
-| `NODE_ENV` | string | Indicates whether the server is running on `development` or `production` mode. |
+| `NODE_ENV` | string | Indicates whether the server is running in `development` or `production` mode. |
 | `PORT` or `API_PORT` | number | The port on which the server listens. |
 | `MONGODB_URI` | string | The URI of the MongoDB instance to connect to. ([Read more](https://www.mongodb.com/docs/v5.0/reference/connection-string/)) |
 | `SESSION_SECRET` | string | The secret used to sign the session ID cookie. Sould be a random set of characters. ([Read more](https://www.npmjs.com/package/express-session#secret)) |
