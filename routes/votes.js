@@ -126,6 +126,13 @@ router.delete("/polls/:pollId/results", setCookie, checkPermission, async (req, 
 			poll: poll._id
 		});
 
+		// delete all custom answers from participants
+
+		await Answer.deleteMany({
+			poll: poll._id,
+			fromParticipant: true
+		})
+
 		return res.status(200).send("OK");
 	} catch (err) {
 		console.log(err);

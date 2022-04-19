@@ -13,6 +13,10 @@ const AnswerSchema = Schema({
 		ref: "Poll",
 		required: true,
 	},
+	fromParticipant: {
+		type: Boolean,
+		default: false
+	},
 	hidden: {
 		type: Boolean,
 		default: false,

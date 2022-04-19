@@ -14,7 +14,7 @@ router.post("/polls/:pollId/answers", setCookie, checkPermission, async (req, re
 			return res.status(400).send("Title required");
 		}
 
-		const { event, poll, isParticipant } = res.locals;
+		const { event, poll, isOrganisator, isParticipant } = res.locals;
 
 		const oldAnswer = await Answer.findOne({
 			title: title.trim(),
@@ -33,6 +33,7 @@ router.post("/polls/:pollId/answers", setCookie, checkPermission, async (req, re
 		const answer = new Answer({
 			title: title.trim(),
 			poll: poll._id,
+			fromParticipant: !isOrganisator,
 			hidden: Boolean(hidden),
 		});
 		await answer.save();
@@ -51,7 +52,7 @@ router.post("/polls/:pollId/answers", setCookie, checkPermission, async (req, re
 // get answers of poll
 router.get("/polls/:pollId/answers", setCookie, checkPermission, async (req, res) => {
 	try {
-		const { poll, isParticipant } = res.locals;
+		const { poll, isOrganisator, isParticipant } = res.locals;
 
 		const answers = await Answer.find({
 			poll: poll._id,
@@ -62,6 +63,7 @@ router.get("/polls/:pollId/answers", setCookie, checkPermission, async (req, res
 			answers.map((answer) => ({
 				_id: answer._id,
 				title: answer.title,
+				fromParticipant: answer.fromParticipant,
 				hidden: answer.hidden,
 			}))
 		);
@@ -102,6 +104,7 @@ router.put("/answers/:answerId", setCookie, checkPermission, async (req, res) =>
 		return res.status(200).json({
 			_id: answer._id,
 			title: answer.title,
+			fromParticipant: answer.fromParticipant,
 			hidden: answer.hidden,
 		});
 	} catch (err) {

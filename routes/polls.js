@@ -29,8 +29,8 @@ router.post("/events/:code/polls", setCookie, checkPermission, async (req, res) 
 		}
 
 		const answers_ = answers.filter((answer) => answer.trim());
-		if (answers_.length < 1) {
-			return res.status(400).send("At least 1 answer required");
+		if (answers_.length < 1 && allowCustomAnswers !== true) {
+			return res.status(400).send("Provide at least 1 answer or allow custom answers");
 		}
 
 		const poll = new Poll({
@@ -52,6 +52,7 @@ router.post("/events/:code/polls", setCookie, checkPermission, async (req, res) 
 			answers_.map((answer) => ({
 				title: answer.trim(),
 				poll: poll._id,
+				fromParticipant: false,
 				hidden: false,
 			}))
 		);
@@ -70,6 +71,10 @@ router.put("/polls/:pollId", setCookie, checkPermission, async (req, res) => {
 
 		if (!isOrganisator) {
 			return res.status(403).send("You are not an organisator of this event");
+		}
+
+		if (poll.started) {
+			return res.status(400).send("This poll has already been started and therefore can no longer be edited.");
 		}
 
 		const {
@@ -97,6 +102,28 @@ router.put("/polls/:pollId", setCookie, checkPermission, async (req, res) => {
 		}
 
 		await poll.save();
+
+		// delete all answers of this poll
+
+		await Answer.deleteMany({
+			poll: poll._id
+		});
+
+		// add new answers
+
+		const answers_ = answers.filter((answer) => answer.trim());
+		if (answers_.length < 1 && allowCustomAnswers !== true) {
+			return res.status(400).send("Provide at least 1 answer or allow custom answers");
+		}
+
+		await Answer.insertMany(
+			answers_.map((answer) => ({
+				title: answer.trim(),
+				poll: poll._id,
+				fromParticipant: false,
+				hidden: false,
+			}))
+		);
 
 		return res.status(200).send(poll);
 	} catch (err) {
