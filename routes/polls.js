@@ -48,7 +48,7 @@ router.post("/events/:code/polls", setCookie, checkPermission, async (req, res) 
 		});
 		await poll.save();
 
-		await Answer.insertMany(
+		const insertedAnswers = await Answer.insertMany(
 			answers_.map((answer) => ({
 				title: answer.trim(),
 				poll: poll._id,
@@ -57,7 +57,10 @@ router.post("/events/:code/polls", setCookie, checkPermission, async (req, res) 
 			}))
 		);
 
-		return res.status(200).json(poll);
+		return res.status(200).json({
+			...poll.toObject(),
+			answers: insertedAnswers,
+		});
 	} catch (err) {
 		console.log(err);
 		return res.status(500).send("Something went wrong...");
@@ -74,7 +77,11 @@ router.put("/polls/:pollId", setCookie, checkPermission, async (req, res) => {
 		}
 
 		if (poll.started) {
-			return res.status(400).send("This poll has already been started and therefore can no longer be edited.");
+			return res
+				.status(400)
+				.send(
+					"This poll has already been started and therefore can no longer be edited. Stop it first!"
+				);
 		}
 
 		const {
@@ -106,7 +113,7 @@ router.put("/polls/:pollId", setCookie, checkPermission, async (req, res) => {
 		// delete all answers of this poll
 
 		await Answer.deleteMany({
-			poll: poll._id
+			poll: poll._id,
 		});
 
 		// add new answers
@@ -116,7 +123,7 @@ router.put("/polls/:pollId", setCookie, checkPermission, async (req, res) => {
 			return res.status(400).send("Provide at least 1 answer or allow custom answers");
 		}
 
-		await Answer.insertMany(
+		const insertedAnswers = await Answer.insertMany(
 			answers_.map((answer) => ({
 				title: answer.trim(),
 				poll: poll._id,
@@ -125,7 +132,12 @@ router.put("/polls/:pollId", setCookie, checkPermission, async (req, res) => {
 			}))
 		);
 
-		return res.status(200).send(poll);
+		console.log(insertedAnswers);
+
+		return res.status(200).send({
+			...poll.toObject(),
+			answers: insertedAnswers,
+		});
 	} catch (err) {
 		console.log(err);
 		res.status(500).send("Something went wrong...");
@@ -137,12 +149,22 @@ router.get("/events/:code/polls", setCookie, checkPermission, async (req, res) =
 	try {
 		const { event, isParticipant } = res.locals;
 
-		const polls = await Poll.find({
-			event: event._id,
-			...(isParticipant && { started: true }),
-		});
-
-		// TODO: return answers
+		const polls = await Poll.aggregate([
+			{
+				$match: {
+					event: event._id,
+					...(isParticipant && { started: true }),
+				},
+			},
+			{
+				$lookup: {
+					from: Answer.collection.name,
+					localField: "_id",
+					foreignField: "poll",
+					as: "answers",
+				},
+			},
+		]);
 
 		return res.status(200).send(polls);
 	} catch (err) {
@@ -156,9 +178,16 @@ router.get("/polls/:pollId", setCookie, checkPermission, async (req, res) => {
 	try {
 		const { poll } = res.locals;
 
-		// TODO: return answers
+		// get answers
+		const answers = await Answer.find({
+			poll: poll._id,
+		});
 
-		return res.status(200).send(poll);
+		// TODO: a little bit hacky?
+		return res.status(200).send({
+			...poll.toObject(),
+			answers: answers,
+		});
 	} catch (err) {
 		console.log(err);
 		return res.status(500).send("Something went wrong...");

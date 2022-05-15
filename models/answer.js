@@ -15,7 +15,7 @@ const AnswerSchema = Schema({
 	},
 	fromParticipant: {
 		type: Boolean,
-		default: false
+		default: false,
 	},
 	hidden: {
 		type: Boolean,
