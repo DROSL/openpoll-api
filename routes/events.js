@@ -28,8 +28,8 @@ router.post("/events", setCookie, async (req, res) => {
 		const { title, description, open } = req.body;
 
 		const event = new Event({
-			...(title.trim() && { title: title.trim() }),
-			...(description && { description: description }),
+			...(typeof title !== "undefined" && { title: String(title).trim() }),
+			...(typeof description !== "undefined" && { description: String(description) }),
 			...(open === Boolean(open) && { open: open }),
 			code: generateRandomString(CODE_LENGTH, CODE_CHARS),
 			secret: generateRandomString(SECRET_LENGTH, SECRET_CHARS),
@@ -89,15 +89,15 @@ router.put("/events/:code", setCookie, checkPermission, async (req, res) => {
 
 		const { title, description, open } = req.body;
 
-		if (title && title.trim()) {
-			event.title = title.trim();
+		if (typeof title !== "undefined") {
+			event.title = String(title).trim();
 		}
 
-		if (description) {
-			event.description = description;
+		if (description !== "undefined") {
+			event.description = String(description);
 		}
 
-		if (open == true || open == false) {
+		if (open === true || open === false) {
 			event.open = open;
 		}
 
