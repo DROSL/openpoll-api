@@ -1,7 +1,6 @@
 const socketio = require("socket.io");
 
-const setSocketCookie = require("./middleware/setSocketCookie");
-
+const User = require("./models/user");
 const Event = require("./models/event");
 
 module.exports = (server, session) => {
@@ -9,10 +8,12 @@ module.exports = (server, session) => {
 
 	io.use((socket, next) => session(socket.request, {}, next));
 
-	io.use(setSocketCookie);
-
 	io.on("connection", async (socket) => {
 		console.log(`Socket ${socket.id} connected`);
+
+		socket.on("disconnect", () => {
+			console.log(`Socket ${socket.id} disconnected`);
+		});
 
 		socket.on("disconnecting", () => {
 			[...socket.rooms]
@@ -22,12 +23,13 @@ module.exports = (server, session) => {
 				});
 		});
 
-		socket.on("disconnect", () => {
-			console.log(`Socket ${socket.id} disconnected`);
-		});
+		// refuse connection if no user id has been set
+		if (!socket.request.session.userId) {
+			socket.disconnect();
+		}
 
 		const { userId } = socket.request.session;
-		socket.userId = userId;
+		socket.data.userId = userId;
 
 		const events = await Event.find({
 			$or: [

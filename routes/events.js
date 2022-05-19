@@ -137,9 +137,9 @@ router.post("/events/:code/join", setCookie, async (req, res) => {
 		io.to(event.code).emit("user-join", event.code);
 
 		// add socket to room
-		const sockets = await io.fetchSockets();
-		const socket = sockets.filter((s) => s.userId === userId)[0];
-		if (socket) {
+		const allSockets = await io.fetchSockets();
+		const sockets = allSockets.filter((socket) => socket.data.userId === userId.toString());
+		for (let socket of sockets) {
 			socket.join(event.code);
 		}
 
