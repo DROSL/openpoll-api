@@ -21,6 +21,7 @@ const morgan = require("morgan");
 app.use(morgan("tiny"));
 
 const mongoose = require("mongoose");
+console.log(process.env.MONGODB_URI);
 mongoose.connect(process.env.MONGODB_URI);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
@@ -51,10 +52,8 @@ app.use(config.path, router);
 const socket = require("./socket")(http, session);
 global.io = socket;
 
-app.use(express.static("public"));
-
 app.get("/", (req, res) => {
-	res.status(200).send("OK");
+	res.status(200).json({ ok: true });
 });
 
 module.exports = app;

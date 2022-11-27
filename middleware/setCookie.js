@@ -7,6 +7,7 @@ const setCookie = async (req, res, next) => {
 			await user.save();
 
 			req.session.userId = user._id.toString();
+			console.log("Cookie has been set");
 		}
 
 		next();

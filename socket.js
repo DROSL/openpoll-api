@@ -1,3 +1,5 @@
+const config = require("config");
+
 const socketio = require("socket.io");
 
 const User = require("./models/user");
@@ -25,6 +27,7 @@ module.exports = (server, session) => {
 
 		// refuse connection if no user id has been set
 		if (!socket.request.session.userId) {
+			console.log("user does not have a user id");
 			socket.disconnect();
 		}
 

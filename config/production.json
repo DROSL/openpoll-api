@@ -1,7 +1,7 @@
 {
-	"path": "/v1",
+	"path": "/api",
 	"cookie": {
-		"secure": true,
+		"secure": false,
 		"httpOnly": true
 	}
 }
