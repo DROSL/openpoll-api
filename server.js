@@ -21,7 +21,6 @@ const morgan = require("morgan");
 app.use(morgan("tiny"));
 
 const mongoose = require("mongoose");
-console.log(process.env.MONGODB_URI);
 mongoose.connect(process.env.MONGODB_URI);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
